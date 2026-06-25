@@ -42,7 +42,7 @@ class _uploadState extends State<upload> {
               const Text("A good price keeps you and your client happy", style: TextStyle(fontSize: 12),),
               SizedBox(width: MediaQuery.of(context).size.width * .7, child: TextField(
                 controller: _price,
-                decoration: InputDecoration(focusColor: const Color.fromARGB(255, 51, 49, 49), fillColor: const Color.fromARGB(255, 60, 54, 244), hintText: "99", suffixText: '\$'),                
+                decoration: InputDecoration(hintText: "99", suffixText: '\$'),                
               ),),
 
 
