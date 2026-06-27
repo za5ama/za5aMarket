@@ -1,31 +1,33 @@
 import 'package:flutter/material.dart';
-import 'signup.dart';
+import 'login.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-class loginPage extends StatefulWidget {
-  const loginPage({super.key});
+
+
+class signupPage extends StatefulWidget {
+  const signupPage({super.key});
 
   @override
-  State<loginPage> createState() => _loginPageState();
+  State<signupPage> createState() => _signupPageState();
 }
 
-class _loginPageState extends State<loginPage> {
+class _signupPageState extends State<signupPage> {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
-
-
-  Future<void>login(String mail, String pass) async {
+  Future<void>signup(String mail, String pass)async{
+    print("email: ${mail}, pass: ${pass}");
     try{
-      await Supabase.instance.client.auth.signInWithPassword(email: mail, password: pass);   
+    Supabase.instance.client.auth.signUp(email: mail, password: pass);
     }
     on AuthException catch(e){
-      print("Login error ${e}");
+      print("1 ${e}");
     }
     catch(e){
-      print("unexpected error ${e}");
+      print("2 ${e}");
     }
-    _password.clear();
     _email.clear();
+    _password.clear();
   }
+  
 
 
   @override
@@ -35,7 +37,7 @@ class _loginPageState extends State<loginPage> {
         const SizedBox(height: 40,),
         Image.asset("assets/images/biglogo.png", width: 260,),
         SizedBox(height: 20,),
-        const Text('Welcome Back!', style: TextStyle(fontSize: 25,fontWeight: FontWeight(250)),),
+        const Text('Welcome!', style: TextStyle(fontSize: 25,fontWeight: FontWeight(250)),),
         SizedBox(height: 20,),])),
         Container(width: MediaQuery.of(context).size.width * .9, height: MediaQuery.of(context).size.height*.5, decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),color: const Color.fromARGB(255, 238, 238, 238)),
           child: Column(children: [
@@ -47,12 +49,12 @@ class _loginPageState extends State<loginPage> {
             SizedBox(width:MediaQuery.of(context).size.width*.8 , child: TextField(obscureText: true,controller: _password, decoration: InputDecoration(hintText: " pass123",),)),
             const SizedBox(height: 50,),
             Container(width: MediaQuery.of(context).size.width*.4, decoration: BoxDecoration(color: Colors.deepOrange, borderRadius: BorderRadius.circular(5)),
-              child: TextButton(onPressed: (){login(_email.text, _password.text);}, child: Text("Log In",style: TextStyle(color: Colors.white, fontSize: 15),)),
+              child: TextButton(onPressed: (){signup(_email.text, _password.text);}, child: Text("Sign Up",style: TextStyle(color: Colors.white, fontSize: 15),)),
             ),
             const SizedBox(height: 30,),
             Row(mainAxisAlignment: MainAxisAlignment.center ,children: [
-              Text("Don't have an account?"),
-              TextButton(onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => const signupPage()));}, child: Text("Sign Up!",style: TextStyle(fontWeight: FontWeight(700), fontSize: 17),))
+              Text("Already have an account?"),
+              TextButton(onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => const loginPage()));}, child: Text("Log In!",style: TextStyle(fontWeight: FontWeight(700), fontSize: 17),))
             ],)
           ],),
         )
