@@ -22,7 +22,7 @@ class _uploadState extends State<upload> {
     return Scaffold(
       body: Center(child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20), child: Container(
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(50), color: const Color.fromARGB(255, 214, 204, 204)),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(50), color: const Color.fromARGB(255, 228, 225, 225)),
           height: MediaQuery.of(context).size.height * .75,
           width: MediaQuery.of(context).size.width * .9,
           child:  Column(mainAxisAlignment: MainAxisAlignment.center,
@@ -50,7 +50,7 @@ class _uploadState extends State<upload> {
               const Text("Add an Image", style: TextStyle(fontSize: 24),),
               const Text("Help your client visualize your product", style: TextStyle(fontSize: 12),),
               SizedBox(height: 10,),
-              TextButton(onPressed: PickImage, child: Container(alignment: Alignment.center,decoration: BoxDecoration(color: const Color.fromARGB(255, 185, 109, 104), borderRadius: BorderRadius.circular(5)), width: MediaQuery.of(context).size.width*.5,height: 50,child: Text("Upload Image!",style: TextStyle(color: const Color.fromARGB(255, 225, 225, 225),fontWeight: FontWeight(250), fontSize: 30),),)),
+              TextButton(onPressed: PickImage, child: Container(alignment: Alignment.center,decoration: BoxDecoration(color: const Color.fromARGB(255, 184, 86, 79), borderRadius: BorderRadius.circular(5)), width: MediaQuery.of(context).size.width*.5,height: 50,child: Text("Upload Image!",style: TextStyle(color: const Color.fromARGB(255, 225, 225, 225),fontWeight: FontWeight(250), fontSize: 30),),)),
               SizedBox(height: 10,),
               _imageIsSelected
               ? Text("No Image Selected!")

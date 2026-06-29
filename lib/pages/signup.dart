@@ -20,7 +20,6 @@ class _signupPageState extends State<signupPage> {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
   bool verif(String email, String password){
-    
     if(email.isEmpty){feedback(context, "Enter Email!"); return false;}
     if(email.indexOf("@")==-1){feedback(context, "Email address is unvalid, try using another one"); return false;}
     if(password.isEmpty){feedback(context, "Enter Password!"); return false;}
@@ -71,7 +70,7 @@ class _signupPageState extends State<signupPage> {
             const SizedBox(height: 30,),
             Row(mainAxisAlignment: MainAxisAlignment.center ,children: [
               Text("Already have an account?"),
-              TextButton(onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => const loginPage()));}, child: Text("Log In!",style: TextStyle(fontWeight: FontWeight(700), fontSize: 17),))
+              TextButton(onPressed: (){Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const loginPage()));}, child: Text("Log In!",style: TextStyle(fontWeight: FontWeight(700), fontSize: 17),))
             ],)
           ],),
         )

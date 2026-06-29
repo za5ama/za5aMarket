@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'signup.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'screen.dart';
 class loginPage extends StatefulWidget {
   const loginPage({super.key});
 
@@ -11,22 +12,29 @@ class loginPage extends StatefulWidget {
 class _loginPageState extends State<loginPage> {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
-
+  void feedback(BuildContext context, String message){
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message), duration: Duration(seconds: 5),)
+    );
+  }
 
   Future<void>login(String mail, String pass) async {
+    if(mail.isNotEmpty && pass.isNotEmpty){
     try{
-      await Supabase.instance.client.auth.signInWithPassword(email: mail, password: pass);   
+      final AuthResponse res=await Supabase.instance.client.auth.signInWithPassword(email: mail, password: pass);
+      if (res.user != null) {
+      Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => const Format()),);
+      }   
     }
     on AuthException catch(e){
       print("Login error ${e}");
-    }
-    catch(e){
-      print("unexpected error ${e}");
+      if(e.code=="invalid_credentials")(feedback(context, "Invalid Email or Password"));
+      else{feedback(context, "Unkown error");}
     }
     _password.clear();
     _email.clear();
   }
-
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +60,7 @@ class _loginPageState extends State<loginPage> {
             const SizedBox(height: 30,),
             Row(mainAxisAlignment: MainAxisAlignment.center ,children: [
               Text("Don't have an account?"),
-              TextButton(onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => const signupPage()));}, child: Text("Sign Up!",style: TextStyle(fontWeight: FontWeight(700), fontSize: 17),))
+              TextButton(onPressed: (){Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const signupPage()));}, child: Text("Sign Up!",style: TextStyle(fontWeight: FontWeight(700), fontSize: 17),))
             ],)
           ],),
         )
