@@ -11,24 +11,41 @@ class signupPage extends StatefulWidget {
 }
 
 class _signupPageState extends State<signupPage> {
+  void feedback(BuildContext context, String message){
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message), duration: Duration(seconds: 5),)
+    );
+  }
+
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
+  bool verif(String email, String password){
+    
+    if(email.isEmpty){feedback(context, "Enter Email!"); return false;}
+    if(email.indexOf("@")==-1){feedback(context, "Email address is unvalid, try using another one"); return false;}
+    if(password.isEmpty){feedback(context, "Enter Password!"); return false;}
+    if(password.length < 8){feedback(context, "Password must have at least 8 characters!"); return false;}
+    return true;
+    
+  }
+
   Future<void>signup(String mail, String pass)async{
-    print("email: ${mail}, pass: ${pass}");
+    if(verif(mail,pass)){
     try{
-    Supabase.instance.client.auth.signUp(email: mail, password: pass);
+    await Supabase.instance.client.auth.signUp(email: mail, password: pass);
     }
     on AuthException catch(e){
-      print("1 ${e}");
+      String? error = e.code;
+      print(error);
+      if(error=="user_already_exists"){feedback(context, "User Already Exists!");}
+      else if(error=="over_email_send_rate_limit"){feedback(context, "Too many requests, try again later!");}
+      else if(error=="email_address_invalid"){feedback(context, "Email address is unvalid, try using another one");}
+      else{feedback(context, "Unknown error");}
+      _email.clear();
+      _password.clear();
     }
-    catch(e){
-      print("2 ${e}");
-    }
-    _email.clear();
-    _password.clear();
   }
-  
-
+  }
 
   @override
   Widget build(BuildContext context) {
