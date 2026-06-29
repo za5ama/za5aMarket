@@ -14,7 +14,7 @@ class _loginPageState extends State<loginPage> {
   final TextEditingController _password = TextEditingController();
   void feedback(BuildContext context, String message){
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message), duration: Duration(seconds: 5),)
+      SnackBar(content: Text(message), duration: Duration(seconds: 3),)
     );
   }
 

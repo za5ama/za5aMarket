@@ -13,7 +13,7 @@ class signupPage extends StatefulWidget {
 class _signupPageState extends State<signupPage> {
   void feedback(BuildContext context, String message){
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message), duration: Duration(seconds: 5),)
+      SnackBar(content: Text(message), duration: Duration(seconds: 3),)
     );
   }
 

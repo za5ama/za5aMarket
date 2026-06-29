@@ -24,7 +24,21 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: .fromSeed(seedColor: const Color.fromARGB(254, 101, 1, 0)),
       ),
-      home: const loginPage(),
+      home: StreamBuilder<AuthState>(
+    stream: Supabase.instance.client.auth.onAuthStateChange,
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return const Scaffold(body: Center(child: CircularProgressIndicator()));
+      }
+      
+      final session = snapshot.data?.session;
+      if (session != null) {
+        return const Format(); 
+      } else {
+        return const loginPage();
+      }
+    },
+  ),
     );
   }
 }
