@@ -30,7 +30,6 @@ class _loginPageState extends State<loginPage> {
       feedback(context, "Welcome back!");
     }
     on AuthException catch(e){
-      print("Login error ${e}");
       if(e.code=="invalid_credentials")feedback(context, "Invalid Email or Password");
       else{feedback(context, "Unkown error");}
     }

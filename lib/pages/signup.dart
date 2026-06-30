@@ -39,7 +39,6 @@ class _signupPageState extends State<signupPage> {
     }
     on AuthException catch(e){
       String? error = e.code;
-      print(error);
       if(error=="user_already_exists"){feedback(context, "User Already Exists!");}
       else if(error=="over_email_send_rate_limit"){feedback(context, "Too many requests, try again later!");}
       else if(error=="email_address_invalid"){feedback(context, "Email address is unvalid, try using another one");}
