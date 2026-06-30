@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
 class upload extends StatefulWidget {
   const upload({super.key});
 
@@ -11,11 +13,9 @@ class _uploadState extends State<upload> {
   final TextEditingController _label = TextEditingController();
   final TextEditingController _price = TextEditingController();
   final ImagePicker _picker=ImagePicker();
-  bool _imageIsSelected = false;
-  Future<void> PickImage() async{
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-    _imageIsSelected = image==null;
-  }
+  bool verif(){return true;}
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,16 +44,12 @@ class _uploadState extends State<upload> {
                 decoration: InputDecoration(hintText: "99", suffixText: '\$'),                
               ),),
 
-
               const SizedBox(height: 40,),
               const Text("Add an Image", style: TextStyle(fontSize: 24),),
               const Text("Help your client visualize your product", style: TextStyle(fontSize: 12),),
               SizedBox(height: 10,),
-              TextButton(onPressed: PickImage, child: Container(alignment: Alignment.center,decoration: BoxDecoration(color: const Color.fromARGB(255, 184, 86, 79), borderRadius: BorderRadius.circular(5)), width: MediaQuery.of(context).size.width*.5,height: 50,child: Text("Upload Image!",style: TextStyle(color: const Color.fromARGB(255, 225, 225, 225),fontWeight: FontWeight(250), fontSize: 30),),)),
+              TextButton(onPressed: (){}, child: Container(alignment: Alignment.center,decoration: BoxDecoration(color: const Color.fromARGB(255, 184, 86, 79), borderRadius: BorderRadius.circular(5)), width: MediaQuery.of(context).size.width*.5,height: 50,child: Text("Upload Image!",style: TextStyle(color: const Color.fromARGB(255, 225, 225, 225),fontWeight: FontWeight(250), fontSize: 30),),)),
               SizedBox(height: 10,),
-              _imageIsSelected
-              ? Text("No Image Selected!")
-              : Text("Image Selected!"),
               
             ],
           ),),
