@@ -16,9 +16,10 @@ class _signupPageState extends State<signupPage> {
       SnackBar(content: Text(message), duration: Duration(seconds: 3),)
     );
   }
-
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
+  bool _isLoading= false;
+
   bool verif(String email, String password){
     if(email.isEmpty){feedback(context, "Enter Email!"); return false;}
     if(email.indexOf("@")==-1){feedback(context, "Email address is unvalid, try using another one"); return false;}
@@ -30,8 +31,11 @@ class _signupPageState extends State<signupPage> {
 
   Future<void>signup(String mail, String pass)async{
     if(verif(mail,pass)){
+    setState(() => _isLoading=true);
     try{
     await Supabase.instance.client.auth.signUp(email: mail, password: pass);
+    feedback(context, "Signed up successfully! Log in with your account.");
+
     }
     on AuthException catch(e){
       String? error = e.code;
@@ -40,11 +44,13 @@ class _signupPageState extends State<signupPage> {
       else if(error=="over_email_send_rate_limit"){feedback(context, "Too many requests, try again later!");}
       else if(error=="email_address_invalid"){feedback(context, "Email address is unvalid, try using another one");}
       else{feedback(context, "Unknown error");}
-      _email.clear();
-      _password.clear();
     }
+    _email.clear();
+    _password.clear();
+    if(mounted)setState(() => _isLoading=false);
+
   }
-  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +70,9 @@ class _signupPageState extends State<signupPage> {
             const Text("Password", style: TextStyle(fontSize: 17),),
             SizedBox(width:MediaQuery.of(context).size.width*.8 , child: TextField(obscureText: true,controller: _password, decoration: InputDecoration(hintText: " pass123",),)),
             const SizedBox(height: 50,),
-            Container(width: MediaQuery.of(context).size.width*.4, decoration: BoxDecoration(color: Colors.deepOrange, borderRadius: BorderRadius.circular(5)),
+            _isLoading
+            ? CircularProgressIndicator()
+            : Container(width: MediaQuery.of(context).size.width*.4, decoration: BoxDecoration(color: Colors.deepOrange, borderRadius: BorderRadius.circular(5)),
               child: TextButton(onPressed: (){signup(_email.text, _password.text);}, child: Text("Sign Up",style: TextStyle(color: Colors.white, fontSize: 15),)),
             ),
             const SizedBox(height: 30,),

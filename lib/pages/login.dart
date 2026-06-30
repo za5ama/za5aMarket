@@ -12,6 +12,7 @@ class loginPage extends StatefulWidget {
 class _loginPageState extends State<loginPage> {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
+  bool _isLoading=false;
   void feedback(BuildContext context, String message){
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(message), duration: Duration(seconds: 3),)
@@ -20,19 +21,22 @@ class _loginPageState extends State<loginPage> {
 
   Future<void>login(String mail, String pass) async {
     if(mail.isNotEmpty && pass.isNotEmpty){
+    setState(() => _isLoading=true);
     try{
       final AuthResponse res=await Supabase.instance.client.auth.signInWithPassword(email: mail, password: pass);
       if (res.user != null) {
-      Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => const Format()),);
-      }   
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Format()),);
+      }  
+      feedback(context, "Welcome back!");
     }
     on AuthException catch(e){
       print("Login error ${e}");
-      if(e.code=="invalid_credentials")(feedback(context, "Invalid Email or Password"));
+      if(e.code=="invalid_credentials")feedback(context, "Invalid Email or Password");
       else{feedback(context, "Unkown error");}
     }
     _password.clear();
     _email.clear();
+    if(mounted)setState(() => _isLoading=false);
   }
   }
 
@@ -54,7 +58,9 @@ class _loginPageState extends State<loginPage> {
             const Text("Password", style: TextStyle(fontSize: 17),),
             SizedBox(width:MediaQuery.of(context).size.width*.8 , child: TextField(obscureText: true,controller: _password, decoration: InputDecoration(hintText: " pass123",),)),
             const SizedBox(height: 50,),
-            Container(width: MediaQuery.of(context).size.width*.4, decoration: BoxDecoration(color: Colors.deepOrange, borderRadius: BorderRadius.circular(5)),
+            _isLoading
+            ? SizedBox(height: 20, width: 20, child: CircularProgressIndicator(),)
+            : Container(width: MediaQuery.of(context).size.width*.4, decoration: BoxDecoration(color: Colors.deepOrange, borderRadius: BorderRadius.circular(5)),
               child: TextButton(onPressed: (){login(_email.text, _password.text);}, child: Text("Log In",style: TextStyle(color: Colors.white, fontSize: 15),)),
             ),
             const SizedBox(height: 30,),
